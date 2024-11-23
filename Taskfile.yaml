@@ -1,0 +1,111 @@
+version: '3'
+
+dotenv:
+  - .env
+
+vars:
+  BIN_DIR: bin
+
+tasks:
+  default:
+    silent: true
+    cmds:
+      - task -l --sort none
+
+  fmt:
+    desc: Format code
+    cmds:
+      - go fmt ./...
+
+  vet:
+    desc: Vet code
+    cmds:
+      - go vet ./...
+
+  lint:
+    desc: Lint code
+    cmds:
+      - golangci-lint run
+
+  build:
+    desc: Build all binaries
+    vars:
+      YEARS:
+        sh: ls -1d -- [0-9][0-9][0-9][0-9]
+    cmds:
+      - for: { var: YEARS }
+        task: build:year
+        vars:
+          YEAR: '{{.ITEM}}'
+
+  build:year:
+    desc: Build binary for specific year
+    vars:
+      DAYS:
+        sh: cd {{.YEAR}} && ls -1d -- [0-9][0-9]
+    requires:
+      vars: ['YEAR']
+    cmds:
+      - for: { var: DAYS }
+        task: build:day
+        vars:
+          YEAR: '{{.YEAR}}'
+          DAY: '{{.ITEM}}'
+
+  build:day:
+    desc: Build binary for specific day
+    vars:
+      DAY:
+        sh: printf '%02d' {{.DAY}}
+      SOLUTION_MAIN: '{{.YEAR}}/{{.DAY}}/main.go'
+    requires:
+      vars: ['YEAR', 'DAY']
+    cmds:
+      - go build -o {{.BIN_DIR}}/{{.YEAR}}-{{.DAY}} {{.SOLUTION_MAIN}}
+
+  run:
+    desc: Run specific day
+    vars:
+      DAY:
+        sh: printf '%02d' {{.DAY}}
+      SOLUTION_DIR: '{{.YEAR}}/{{.DAY}}'
+      SOLUTION_MAIN: '{{.SOLUTION_DIR}}/main.go'
+      SOLUTION_INPUT: '{{.SOLUTION_DIR}}/input.txt'
+    requires:
+      vars: ['YEAR', 'DAY']
+    cmds:
+      - go run {{.SOLUTION_MAIN}} --input {{.SOLUTION_INPUT}} {{.CLI_ARGS}}
+
+  clean:
+    desc: Clean up
+    cmds:
+      - go clean
+      - rm -rf {{.BIN_DIR}}
+
+  generate:
+    vars:
+      DAY:
+        sh: printf '%02d' {{.DAY}}
+      SOLUTION_DIR: '{{.YEAR}}/{{.DAY}}'
+      SOLUTION_MAIN: '{{.SOLUTION_DIR}}/main.go'
+    requires:
+      vars: ['YEAR', 'DAY']
+    cmds:
+      - mkdir -p {{.SOLUTION_DIR}}
+      - '[ ! -e "{{.SOLUTION_MAIN}}" ]'
+      - cp pkg/template/main.go {{.SOLUTION_MAIN}}
+      - sed -i '1d' {{.SOLUTION_MAIN}}
+      - sed -i 's/YYYY/{{.YEAR}}/g' {{.SOLUTION_MAIN}}
+      - sed -i 's/DD/{{.DAY}}/g' {{.SOLUTION_MAIN}}
+
+  aoc:input:
+    desc: Download inputs from AoC website
+    vars:
+      DAY_DIR:
+        sh: printf '%02d' {{.DAY}}
+      SOLUTION_DIR: '{{.YEAR}}/{{.DAY_DIR}}'
+    requires:
+      vars: ['YEAR', 'DAY']
+    cmds:
+      - mkdir -p {{.SOLUTION_DIR}}
+      - curl --cookie 'session={{.SESSION}}' https://adventofcode.com/{{.YEAR}}/day/{{.DAY}}/input > {{.SOLUTION_DIR}}/input.txt
