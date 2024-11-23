@@ -9,10 +9,10 @@ import (
 	"github.com/FilipSolich/advent-of-code/pkg/utils"
 )
 
-type SolutionFunc func(input string) (string, error)
+type SolutionFunc func(input string) (int, error)
 
 type Solution struct {
-	Output string
+	Output int
 	Err    error
 }
 

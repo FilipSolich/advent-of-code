@@ -56,7 +56,7 @@ tasks:
     desc: Build binary for specific day
     vars:
       DAY:
-        sh: printf '%02d' {{.DAY}}
+        sh: 'if [ $(echo {{.DAY}} | wc -c) -le 2 ]; then printf "%02d" {{.DAY}}; else echo "{{.DAY}}"; fi'
       SOLUTION_MAIN: '{{.YEAR}}/{{.DAY}}/main.go'
     requires:
       vars: ['YEAR', 'DAY']
@@ -67,7 +67,7 @@ tasks:
     desc: Run specific day
     vars:
       DAY:
-        sh: printf '%02d' {{.DAY}}
+        sh: 'if [ $(echo {{.DAY}} | wc -c) -le 2 ]; then printf "%02d" {{.DAY}}; else echo "{{.DAY}}"; fi'
       SOLUTION_DIR: '{{.YEAR}}/{{.DAY}}'
       SOLUTION_MAIN: '{{.SOLUTION_DIR}}/main.go'
       SOLUTION_INPUT: '{{.SOLUTION_DIR}}/input.txt'
@@ -85,7 +85,7 @@ tasks:
   generate:
     vars:
       DAY:
-        sh: printf '%02d' {{.DAY}}
+        sh: 'if [ $(echo {{.DAY}} | wc -c) -le 2 ]; then printf "%02d" {{.DAY}}; else echo "{{.DAY}}"; fi'
       SOLUTION_DIR: '{{.YEAR}}/{{.DAY}}'
       SOLUTION_MAIN: '{{.SOLUTION_DIR}}/main.go'
     requires:
@@ -102,10 +102,10 @@ tasks:
     desc: Download inputs from AoC website
     vars:
       DAY_DIR:
-        sh: printf '%02d' {{.DAY}}
+        sh: 'if [ $(echo {{.DAY}} | wc -c) -le 2 ]; then printf "%02d" {{.DAY}}; else echo "{{.DAY}}"; fi'
       SOLUTION_DIR: '{{.YEAR}}/{{.DAY_DIR}}'
     requires:
       vars: ['YEAR', 'DAY']
     cmds:
       - mkdir -p {{.SOLUTION_DIR}}
-      - curl --cookie 'session={{.SESSION}}' https://adventofcode.com/{{.YEAR}}/day/{{.DAY}}/input > {{.SOLUTION_DIR}}/input.txt
+      - curl --cookie 'session={{.SESSION}}' https://adventofcode.com/{{.YEAR}}/day/{{.DAY}}/input -o {{.SOLUTION_DIR}}/input.txt

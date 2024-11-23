@@ -46,11 +46,11 @@ func printStats(duration time.Duration, config utils.Config) {
 	fmt.Printf(lineFormat, "Time limit:", config.Timeout)
 }
 
-func PrintAnswer(title string, result string, duration time.Duration, config utils.Config) {
+func PrintAnswer(title string, result int, duration time.Duration, config utils.Config) {
 	titleLine, endLine := printGuards(title)
 	fmt.Println(titleLine)
 	printStats(duration, config)
-	fmt.Printf(lineFormat, "Result:", fmt.Sprintf("\033[36m%s\033[0m", result))
+	fmt.Printf(lineFormat, "Result:", fmt.Sprintf("\033[36m%d\033[0m", result))
 	fmt.Println(endLine)
 }
 

@@ -11,12 +11,12 @@ import (
 	"github.com/FilipSolich/advent-of-code/pkg/utils"
 )
 
-func part1(input string) (string, error) {
-	return "", errors.New("not implemented")
+func part1(input string) (int, error) {
+	return 0, errors.New("not implemented")
 }
 
-func part2(input string) (string, error) {
-	return "", errors.New("not implemented")
+func part2(input string) (int, error) {
+	return 0, errors.New("not implemented")
 }
 
 func main() {
