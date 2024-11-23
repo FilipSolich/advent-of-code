@@ -24,7 +24,10 @@ func part1(input string) (int, error) {
 	for sc.Scan() {
 		gameLine := strings.Split(sc.Text(), ": ")
 		var gameID int
-		fmt.Sscanf(gameLine[0], "Game %d", &gameID)
+		_, err := fmt.Sscanf(gameLine[0], "Game %d", &gameID)
+		if err != nil {
+			return 0, err
+		}
 
 		gameFitsIn := true
 		sets := strings.Split(gameLine[1], "; ")
@@ -34,7 +37,10 @@ func part1(input string) (int, error) {
 			for _, color := range colors {
 				var num int
 				var colorStr string
-				fmt.Sscanf(color, "%d %s", &num, &colorStr)
+				_, err := fmt.Sscanf(color, "%d %s", &num, &colorStr)
+				if err != nil {
+					return 0, err
+				}
 				if (colorStr == "red" && num > MaxRed) || (colorStr == "green" && num > MaxGreen) || (colorStr == "blue" && num > MaxBlue) {
 					gameFitsIn = false
 					break outer
@@ -56,7 +62,10 @@ func part2(input string) (int, error) {
 	for sc.Scan() {
 		gameLine := strings.Split(sc.Text(), ": ")
 		var gameID int
-		fmt.Sscanf(gameLine[0], "Game %d", &gameID)
+		_, err := fmt.Sscanf(gameLine[0], "Game %d", &gameID)
+		if err != nil {
+			return 0, err
+		}
 
 		sets := strings.Split(gameLine[1], "; ")
 		maxRed, maxGreen, maxBlue := 0, 0, 0
