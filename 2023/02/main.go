@@ -74,7 +74,10 @@ func part2(input string) (int, error) {
 			for _, color := range colors {
 				var num int
 				var colorStr string
-				fmt.Sscanf(color, "%d %s", &num, &colorStr)
+				_, err := fmt.Sscanf(color, "%d %s", &num, &colorStr)
+				if err != nil {
+					return 0, err
+				}
 				switch colorStr {
 				case "red":
 					if num > maxRed {
