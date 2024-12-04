@@ -16,7 +16,10 @@ func part1(input string) (int, error) {
 	sum := 0
 	for _, n := range out {
 		var x, y int
-		fmt.Sscanf(string(n), "mul(%d,%d)", &x, &y)
+		_, err := fmt.Sscanf(string(n), "mul(%d,%d)", &x, &y)
+		if err != nil {
+			return 0, err
+		}
 		sum += x * y
 	}
 	return sum, nil
@@ -32,7 +35,10 @@ func part2(input string) (int, error) {
 		muls := re.FindAll([]byte(dontSplit[0]), -1)
 		for _, n := range muls {
 			var x, y int
-			fmt.Sscanf(string(n), "mul(%d,%d)", &x, &y)
+			_, err := fmt.Sscanf(string(n), "mul(%d,%d)", &x, &y)
+			if err != nil {
+				return 0, err
+			}
 			sum += x * y
 		}
 	}
