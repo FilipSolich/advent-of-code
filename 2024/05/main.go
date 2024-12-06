@@ -63,7 +63,7 @@ nextL:
 				}
 			}
 		}
-		inc := utils.MustAtoi(nums[int(len(nums)/2)])
+		inc := utils.MustAtoi(nums[len(nums)/2])
 		sum += inc
 	}
 
@@ -124,7 +124,7 @@ nextL:
 		}
 		line = sortLine(data, line)
 
-		sum += line[int(len(line)/2)]
+		sum += line[len(line)/2]
 	}
 
 	return sum, nil
