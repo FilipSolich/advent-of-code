@@ -46,7 +46,6 @@ l:
 
 func apply(x, y int) []int {
 	return []int{x + y, x * y, utils.MustAtoi(fmt.Sprintf("%d%d", x, y))}
-
 }
 
 func part2(input string) (int, error) {
