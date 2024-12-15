@@ -79,7 +79,6 @@ tasks:
           YEAR: '{{.YEAR}}'
           DAY: '{{.DAY}}'
       - ./{{.BIN_DIR}}/{{.YEAR}}-{{.DAY}} --input {{.SOLUTION_INPUT}} {{.CLI_ARGS}}
-      #- go run {{.SOLUTION_MAIN}} --input {{.SOLUTION_INPUT}} {{.CLI_ARGS}}
 
   clean:
     desc: Clean up
