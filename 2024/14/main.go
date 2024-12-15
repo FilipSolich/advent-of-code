@@ -99,7 +99,7 @@ func part1(input string) (int, error) {
 
 func part2(input string) (int, error) {
 	robots := parse(input)
-	for s := range 100000 {
+	for s := range 10000 {
 		printRobots(robots, s)
 		for i, r := range robots {
 			robots[i] = move(r)
