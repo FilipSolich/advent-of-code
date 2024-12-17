@@ -60,7 +60,7 @@
             "program": "${fileDirname}",
             "args": [
                 "--input",
-                "${fileDirname}/test1.txt",
+                "${fileDirname}/test.txt",
                 "--part",
                 "2",
                 "--timeout",
